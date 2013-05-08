@@ -19,8 +19,10 @@ void testApp::setup(){
     
     ofEnableAlphaBlending();
     ofSetFrameRate(FPS);
+    ofSetLogLevel(OF_LOG_WARNING);
     ofEnableSmoothing();
     ofSetVerticalSync(true);
+    ofSetCircleResolution(25);
     
     world.init();
     world.doSleep = false;
@@ -41,29 +43,60 @@ void testApp::setup(){
     clearCanvas();
     
     clydiaCanvas.begin();
-    ofPushStyle();
-    ofSetColor(0, 1);
+    ofSetColor(0, 255);
     ofRect(0, 0, ofGetWidth(), ofGetHeight());
-    ofPopStyle();
     clydiaCanvas.end();
     
-    
     drawRect.set(0, 0, ofGetWidth(), ofGetHeight());
-    bSaveCanvas = false;
     
-    initialMass = 20.0f;
-    friction = .8f;
-    bounciness = 0.2f;
-    gravity = 80.0f;
-    drawerRadius = 50;
+    int width = (int)clydiaCanvas.getWidth();
+    int height = (int)clydiaCanvas.getHeight();
     
-    settingsView = [[SettingsUIView alloc] initWithNibName:@"SettingsUIView" bundle:nil];
-    [ofxiPhoneGetGLView() addSubview:settingsView.view];
-    settingsView.view.hidden = YES;
+    pixels = new unsigned char[width * height * 4];
+    grabbed.allocate(width, height, OF_IMAGE_COLOR_ALPHA);
+    
+    // GUI
+    gui = new ofxUISuperCanvas("CLYDIA", OFX_UI_FONT_LARGE);
+    gui->setPosition(30, 30);
+    gui->setGlobalButtonDimension(80);
+    gui->setGlobalCanvasWidth(ofGetWidth() - 60);
+    gui->setGlobalSliderHeight(44);
+    gui->setGlobalSpacerHeight(1);
+    
+    gui->addSlider("BOUNCINESS", 0.0f, 1.0f, &bounciness);
+    gui->addSlider("FRICTION", 0.1f, 2.0f, &friction);
+    gui->addSlider("GRAVITY", 20.0f, 100.0f, &gravity);
+    gui->addSpacer();
+    gui->addLabelButton("ADD DRAWER", &bAddDrawer);
+    gui->addLabelButton("RESET DRAWERS", &bResetDrawers);
+    gui->addSpacer();
+    gui->addLabelButton("SAVE", &bSaveCanvas);
+    gui->addLabelButton("CLEAR", &bClearCanvas);
+    
+    ofAddListener(gui->newGUIEvent, this, &testApp::guiEvent);
+    
+    gui->loadSettings("GUI/guiSettings.xml");
 }
 
 //--------------------------------------------------------------
 void testApp::update(){
+    
+    if (bAddDrawer) {
+        addDrawer();
+        bAddDrawer = false;
+    }
+    if (bResetDrawers) {
+        resetDrawers();
+        bResetDrawers = false;
+    }
+    if (bClearCanvas) {
+        clearCanvas();
+        bClearCanvas = false;
+    }
+    if (bSaveCanvas) {
+        saveCanvas();
+        bSaveCanvas = false;
+    }
     
     float accx = ofxAccelerometer.getForce().x;
     float accy = ofxAccelerometer.getForce().y;
@@ -79,24 +112,23 @@ void testApp::update(){
     for (int i=0; i<drawers.size(); i++) {
         ofxBox2dCircle *drawer = drawers[i];
         
-        // Update tracked positions
         ofVec2f *tPos = new ofVec2f;
         
         tPos->set(drawer->getPosition());
-        
-        Branch *branch = new Branch;
-        tPos->x += ofRandom(-1, 1) * 10;
-        tPos->y += ofRandom(-1, 1) * 10;
-        branch->setup(*tPos, drawRect);
-        //(ofRandom(0, 10) < 8) ? branch->setDrawMode(CL_BRANCH_DRAW_LEAVES) : branch->setDrawMode(CL_BRANCH_DRAW_CIRCLES);
-        branch->setDrawMode(CL_BRANCH_DRAW_LEAVES);
-        branches.push_back(branch);
+        if (drawer->getVelocity().x >= 2.0f || drawer->getVelocity().y >= 2.0f) {
+            Branch *branch = new Branch;
+            tPos->x += ofRandom(-1, 1) * 10;
+            tPos->y += ofRandom(-1, 1) * 10;
+            branch->setup(*tPos, drawRect);
+            (ofRandomf() < .1f) ? branch->setDrawMode(CL_BRANCH_DRAW_CIRCLES) : branch->setDrawMode(CL_BRANCH_DRAW_CIRCLES);
+            branch->setDrawMode(CL_BRANCH_DRAW_LEAVES);
+            branches.push_back(branch);
+        }
     }
     
-    //--------------------------------------------------------------
 	// update clydias
-	//--------------------------------------------------------------
 	for (int i=0; i<branches.size(); i++) {
+        
 		if (branches[i]->getIsAlive()) {
             branches[i]->update();
         } else {
@@ -116,41 +148,35 @@ void testApp::update(){
 }
 
 //--------------------------------------------------------------
-void testApp::draw() {
+void testApp::draw(){
     
     ofSetColor(255, 255);
     clydiaCanvas.draw(0, 0);
     
-    // save image
-    if (bSaveCanvas) {
-        ofImage temp;
-        temp.grabScreen(0, 0, ofGetWidth(), ofGetHeight());
-        // ofGetFrameNum()
-        temp.saveImage("blah.jpg");
-        bSaveCanvas = false;
-    } else {
-        for (int i=0; i<drawers.size(); i++) {
-            ofxBox2dCircle *drawer = drawers[i];
-
-            ofSetColor(255, 255, 255, 20);
-            ofCircle(drawer->getPosition(), drawerRadius);
-            ofNoFill();
-            ofSetColor(255, 0, 0, 255);
-            ofCircle(drawer->getPosition(), drawerRadius);
-            ofFill();
-            ofSetColor(255);
-            ofCircle(drawer->getPosition(), drawerRadius / 10);
-        }
+    for (int i=0; i<drawers.size(); i++) {
+        ofxBox2dCircle *drawer = drawers[i];
+        
+        ofSetColor(255, 255, 255, 20);
+        ofCircle(drawer->getPosition(), drawerRadius);
+        ofNoFill();
+        ofSetColor(255, 0, 0, 255);
+        ofCircle(drawer->getPosition(), drawerRadius);
+        ofFill();
+        ofSetColor(255);
+        ofCircle(drawer->getPosition(), drawerRadius / 10);
     }
 }
 
 //--------------------------------------------------------------
-// clear the canvas
-//--------------------------------------------------------------
-void testApp::clearCanvas()
+void testApp::guiEvent(ofxUIEventArgs &e)
 {
-    for (int i=0;i<branches.size();i++)
-    {
+	
+}
+
+//--------------------------------------------------------------
+void testApp::clearCanvas(){
+    for (int i=0;i<branches.size();i++){
+        branches[i]->kill();
         delete branches[i];
         branches[i] = 0;
     }
@@ -162,42 +188,43 @@ void testApp::clearCanvas()
     clydiaCanvas.end();
 }
 
+
+//--------------------------------------------------------------
+void testApp::resetDrawers(){
+    for (int i=0;i<drawers.size();i++){
+        drawers[i]->destroy();
+    }
+	drawers.clear();
+}
+
 //--------------------------------------------------------------
 void testApp::saveCanvas(){
     
+    ofFbo fbo;
+    
+    int width = (int)clydiaCanvas.getWidth();
+    int height = (int)clydiaCanvas.getHeight();
+    
+    fbo.begin();
+    
+    clydiaCanvas.draw(0, 0, ofGetWidth(), ofGetHeight());
+    glPixelStorei(GL_PACK_ALIGNMENT, 1);
+    glReadPixels(0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
+    
+    grabbed.setFromPixels(pixels, width, height, OF_IMAGE_COLOR_ALPHA);
+    grabbed.saveImage("test1.png");
+    fbo.end();
 }
 
 //--------------------------------------------------------------
 void testApp::exit(){
-    
+    gui->saveSettings("GUI/guiSettings.xml");
+    delete gui;
 }
 
 //--------------------------------------------------------------
 void testApp::touchDown(ofTouchEventArgs & touch){
     
-    if (drawers.size() < 5) {
-        
-        bool bAddDrawer = true;
-        
-        ofxBox2dCircle *drawer = new ofxBox2dCircle;
-        drawer->setPhysics(drawerRadius * drawerRadius * initialMass, bounciness, friction);
-        drawer->setup(world.getWorld(), touch.x, touch.y, drawerRadius);
-        
-        
-        for (int i=0; i<drawers.size(); i++) {
-            ofxBox2dCircle *existingDrawer = drawers[i];
-            
-            if (existingDrawer->getPosition().distance(drawer->getPosition()) < 100) {
-                bAddDrawer = false;
-            }
-        }
-        
-        if (bAddDrawer) {
-            drawers.push_back(drawer);
-        } else {
-            drawer->destroy();
-        }
-    }
 }
 
 //--------------------------------------------------------------
@@ -211,8 +238,40 @@ void testApp::touchUp(ofTouchEventArgs & touch){
 }
 
 //--------------------------------------------------------------
+void testApp::addDrawer(){
+    
+    if (drawers.size() < 5) {
+        
+        bool bCanAddDrawer = true;
+        
+        ofxBox2dCircle *drawer = new ofxBox2dCircle;
+        drawer->setPhysics(drawerRadius * drawerRadius * initialMass, bounciness, friction);
+        
+        float x = ofGetWidth() / 2;
+        float y = ofGetHeight() - drawerRadius * 1.5f;
+        
+        drawer->setup(world.getWorld(), x, y, drawerRadius);
+        
+        
+        for (int i=0; i<drawers.size(); i++) {
+            ofxBox2dCircle *existingDrawer = drawers[i];
+            
+            if (existingDrawer->getPosition().distance(drawer->getPosition()) < 100) {
+                bCanAddDrawer = false;
+            }
+        }
+        
+        if (bCanAddDrawer) {
+            drawers.push_back(drawer);
+        } else {
+            drawer->destroy();
+        }
+    }
+}
+
+//--------------------------------------------------------------
 void testApp::touchDoubleTap(ofTouchEventArgs & touch){
-    settingsView.view.hidden = NO;
+    gui->toggleMinified();
 }
 
 //--------------------------------------------------------------

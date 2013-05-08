@@ -31,7 +31,17 @@ testApp *app;
 
 -(IBAction)saveCanvas:(id)sender
 {
-    app->bSaveCanvas = true;
+    app->saveCanvas();
+}
+
+-(IBAction)addDrawer:(id)sender
+{
+    app->addDrawer();
+}
+
+-(IBAction)resetDrawers:(id)sender
+{
+    app->resetDrawers();
 }
 
 

@@ -43,6 +43,7 @@ public:
 	void setup(const ofPoint &pos, const ofRectangle &b);
 	void update();
 	void draw();
+    void kill();
   
   ofVec2f getPosition() const { return b_pos; }
   int     getAge() const      { return age; }

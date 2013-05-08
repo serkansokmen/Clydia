@@ -101,3 +101,7 @@ void Branch::draw()
     }
 }
 
+void Branch::kill()
+{
+    age = ageOfDeath;
+}
