@@ -50,16 +50,12 @@ void testApp::setup(){
     
     drawRect.set(0, 0, ofGetWidth(), ofGetHeight());
     bSaveCanvas = false;
-    drawer = new ofxBox2dCircle();
     
     initialMass = 20.0f;
     friction = .8f;
     bounciness = 0.2f;
     gravity = 80.0f;
     drawerRadius = 50;
-    
-    drawer->setPhysics(drawerRadius * drawerRadius * initialMass, bounciness, friction);
-    drawer->setup(world.getWorld(), ofGetWidth()/2, ofGetHeight()/2, drawerRadius);
     
     settingsView = [[SettingsUIView alloc] initWithNibName:@"SettingsUIView" bundle:nil];
     [ofxiPhoneGetGLView() addSubview:settingsView.view];
@@ -80,18 +76,22 @@ void testApp::update(){
     
     world.setGravity(fx, fy);
     
-    // Update tracked positions
-    ofVec2f *tPos = new ofVec2f;
-    
-    tPos->set(drawer->getPosition());
-    
-	Branch *branch = new Branch;
-    tPos->x += ofRandom(-1, 1) * 10;
-    tPos->y += ofRandom(-1, 1) * 10;
-    branch->setup(*tPos, drawRect);
-    //(ofRandom(0, 10) < 8) ? branch->setDrawMode(CL_BRANCH_DRAW_LEAVES) : branch->setDrawMode(CL_BRANCH_DRAW_CIRCLES);
-    branch->setDrawMode(CL_BRANCH_DRAW_LEAVES);
-    branches.push_back(branch);
+    for (int i=0; i<drawers.size(); i++) {
+        ofxBox2dCircle *drawer = drawers[i];
+        
+        // Update tracked positions
+        ofVec2f *tPos = new ofVec2f;
+        
+        tPos->set(drawer->getPosition());
+        
+        Branch *branch = new Branch;
+        tPos->x += ofRandom(-1, 1) * 10;
+        tPos->y += ofRandom(-1, 1) * 10;
+        branch->setup(*tPos, drawRect);
+        //(ofRandom(0, 10) < 8) ? branch->setDrawMode(CL_BRANCH_DRAW_LEAVES) : branch->setDrawMode(CL_BRANCH_DRAW_CIRCLES);
+        branch->setDrawMode(CL_BRANCH_DRAW_LEAVES);
+        branches.push_back(branch);
+    }
     
     //--------------------------------------------------------------
 	// update clydias
@@ -129,14 +129,18 @@ void testApp::draw() {
         temp.saveImage("blah.jpg");
         bSaveCanvas = false;
     } else {
-        ofSetColor(255, 255, 255, 20);
-        ofCircle(drawer->getPosition(), drawerRadius);
-        ofNoFill();
-        ofSetColor(255, 0, 0, 255);
-        ofCircle(drawer->getPosition(), drawerRadius);
-        ofFill();
-        ofSetColor(255);
-        ofCircle(drawer->getPosition(), drawerRadius / 10);
+        for (int i=0; i<drawers.size(); i++) {
+            ofxBox2dCircle *drawer = drawers[i];
+
+            ofSetColor(255, 255, 255, 20);
+            ofCircle(drawer->getPosition(), drawerRadius);
+            ofNoFill();
+            ofSetColor(255, 0, 0, 255);
+            ofCircle(drawer->getPosition(), drawerRadius);
+            ofFill();
+            ofSetColor(255);
+            ofCircle(drawer->getPosition(), drawerRadius / 10);
+        }
     }
 }
 
@@ -171,6 +175,29 @@ void testApp::exit(){
 //--------------------------------------------------------------
 void testApp::touchDown(ofTouchEventArgs & touch){
     
+    if (drawers.size() < 5) {
+        
+        bool bAddDrawer = true;
+        
+        ofxBox2dCircle *drawer = new ofxBox2dCircle;
+        drawer->setPhysics(drawerRadius * drawerRadius * initialMass, bounciness, friction);
+        drawer->setup(world.getWorld(), touch.x, touch.y, drawerRadius);
+        
+        
+        for (int i=0; i<drawers.size(); i++) {
+            ofxBox2dCircle *existingDrawer = drawers[i];
+            
+            if (existingDrawer->getPosition().distance(drawer->getPosition()) < 100) {
+                bAddDrawer = false;
+            }
+        }
+        
+        if (bAddDrawer) {
+            drawers.push_back(drawer);
+        } else {
+            drawer->destroy();
+        }
+    }
 }
 
 //--------------------------------------------------------------

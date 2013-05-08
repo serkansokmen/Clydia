@@ -40,7 +40,7 @@ public:
     
     
     ofxBox2d world;
-    ofxBox2dCircle *drawer;
+    vector <ofxBox2dCircle *> drawers;
     ofRectangle drawRect;
     
     bool    bSaveCanvas;
