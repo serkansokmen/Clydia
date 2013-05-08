@@ -30,15 +30,13 @@ void testApp::setup(){
     world.setFPS(FPS);
     
     ofFbo::Settings settings;
-    settings.width = ofGetWidth() * 4;
-    settings.height = ofGetHeight() * 4;
+    settings.width = ofGetWidth();
+    settings.height = ofGetHeight();
     settings.internalformat = GL_RGBA;
     settings.numSamples = 0;
     settings.useDepth = true;
     settings.useStencil = true;
     clydiaCanvas.allocate(settings);
-    
-    bUseTouch = true;
     
     clearCanvas();
     
@@ -51,13 +49,13 @@ void testApp::setup(){
     
     
     drawRect.set(0, 0, ofGetWidth(), ofGetHeight());
-    
+    bSaveCanvas = false;
     drawer = new ofxBox2dCircle();
     
     initialMass = 20.0f;
     friction = .8f;
-    bounciness = 0.5f;
-    gravity = 50.0f;
+    bounciness = 0.2f;
+    gravity = 80.0f;
     drawerRadius = 50;
     
     drawer->setPhysics(drawerRadius * drawerRadius * initialMass, bounciness, friction);
@@ -110,6 +108,7 @@ void testApp::update(){
     
     // draw branches
     clydiaCanvas.begin();
+    ofSetColor(0, 0);
 	for (int i=0; i<branches.size(); i++) {
         branches[i]->draw();
     }
@@ -119,18 +118,26 @@ void testApp::update(){
 //--------------------------------------------------------------
 void testApp::draw() {
     
-    ofSetColor(0, 0, 0, 0);
-    ofRect(0, 0, ofGetWidth(), ofGetHeight());
-    
     ofSetColor(255, 255);
     clydiaCanvas.draw(0, 0);
     
-    ofSetColor(255, 0, 0);
-    ofNoFill();
-    ofCircle(drawer->getPosition(), drawerRadius);
-    ofFill();
-    ofSetColor(255);
-    ofCircle(drawer->getPosition(), drawerRadius / 10);
+    // save image
+    if (bSaveCanvas) {
+        ofImage temp;
+        temp.grabScreen(0, 0, ofGetWidth(), ofGetHeight());
+        // ofGetFrameNum()
+        temp.saveImage("blah.jpg");
+        bSaveCanvas = false;
+    } else {
+        ofSetColor(255, 255, 255, 20);
+        ofCircle(drawer->getPosition(), drawerRadius);
+        ofNoFill();
+        ofSetColor(255, 0, 0, 255);
+        ofCircle(drawer->getPosition(), drawerRadius);
+        ofFill();
+        ofSetColor(255);
+        ofCircle(drawer->getPosition(), drawerRadius / 10);
+    }
 }
 
 //--------------------------------------------------------------
@@ -149,6 +156,11 @@ void testApp::clearCanvas()
 	ofSetColor(0, 255);
 	ofRect(0, 0, ofGetWidth(), ofGetHeight());
     clydiaCanvas.end();
+}
+
+//--------------------------------------------------------------
+void testApp::saveCanvas(){
+    
 }
 
 //--------------------------------------------------------------

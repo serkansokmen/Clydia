@@ -29,10 +29,9 @@ testApp *app;
     app->clearCanvas();
 }
 
-- (IBAction)toggleToush:(UISwitch *)sender
+-(IBAction)saveCanvas:(id)sender
 {
-    UISwitch *switchObj = (UISwitch*)sender;
-    app->bUseTouch = switchObj.on;
+    app->bSaveCanvas = true;
 }
 
 

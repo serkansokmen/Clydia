@@ -7,7 +7,7 @@
 #include "Branch.h"
 #include "SettingsUIView.h"
 
-#define FPS 30
+#define FPS 60
 
 
 class testApp : public ofxiPhoneApp
@@ -31,6 +31,7 @@ public:
     void deviceOrientationChanged(int newOrientation);
     
     void clearCanvas();
+    void saveCanvas();
     
     ofFbo clydiaCanvas;
     
@@ -42,7 +43,7 @@ public:
     ofxBox2dCircle *drawer;
     ofRectangle drawRect;
     
-    bool    bUseTouch;
+    bool    bSaveCanvas;
     
     //
     float initialMass;
