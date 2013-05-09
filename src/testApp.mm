@@ -31,6 +31,10 @@ void testApp::setup(){
     world.registerGrabbing();
     world.setFPS(FPS);
     
+    // register the listener so that we get the events
+    ofAddListener(world.contactStartEvents, this, &testApp::contactStart);
+    ofAddListener(world.contactEndEvents, this, &testApp::contactEnd);
+    
     ofFbo::Settings settings;
     settings.width = ofGetWidth();
     settings.height = ofGetHeight();
@@ -168,6 +172,52 @@ void testApp::draw(){
 }
 
 //--------------------------------------------------------------
+void testApp::contactStart(ofxBox2dContactArgs &e){
+    if (e.a != NULL && e.b != NULL)
+    {
+        // don't check for ground collisions
+        if(e.a->GetType() == b2Shape::e_circle && e.b->GetType() == b2Shape::e_circle)
+        {
+            ofVec2f *aPos = new ofVec2f;
+            ofVec2f *bPos = new ofVec2f;
+            ofVec2f *middlePos = new ofVec2f;
+            
+            aPos->set(e.a->GetBody()->GetPosition().x, e.a->GetBody()->GetPosition().y);
+            bPos->set(e.b->GetBody()->GetPosition().x, e.b->GetBody()->GetPosition().y);
+            
+            middlePos->set(aPos->getMiddle(*bPos));
+            
+//            Branch *branch = new Branch;
+//            middlePos->x += ofRandom(-1, 1) * 10;
+//            middlePos->y += ofRandom(-1, 1) * 10;
+//            branch->setup(*middlePos, drawRect);
+//            (ofRandomf() < .5f) ? branch->setDrawMode(CL_BRANCH_DRAW_LEAVES) : branch->setDrawMode(CL_BRANCH_DRAW_CIRCLES);
+//            branch->setDrawMode(CL_BRANCH_DRAW_LEAVES);
+//            branches.push_back(branch);
+        }
+    }
+}
+
+//--------------------------------------------------------------
+void testApp::contactEnd(ofxBox2dContactArgs &e) {
+    if (e.a != NULL && e.b != NULL)
+    {
+//        SoundData * aData = (SoundData*)e.a->GetBody()->GetUserData();
+//        SoundData * bData = (SoundData*)e.b->GetBody()->GetUserData();
+        
+//        if(aData)
+//        {
+//            aData->bHit = false;
+//        }
+//        
+//        if(bData)
+//        {
+//            bData->bHit = false;
+//        }
+    }
+}
+
+//--------------------------------------------------------------
 void testApp::guiEvent(ofxUIEventArgs &e)
 {
 	
@@ -248,7 +298,7 @@ void testApp::addDrawer(){
         drawer->setPhysics(drawerRadius * drawerRadius * initialMass, bounciness, friction);
         
         float x = ofGetWidth() / 2;
-        float y = ofGetHeight() - drawerRadius * 1.5f;
+        float y = drawerRadius * 1.5f;
         
         drawer->setup(world.getWorld(), x, y, drawerRadius);
         
@@ -265,6 +315,8 @@ void testApp::addDrawer(){
             drawers.push_back(drawer);
         } else {
             drawer->destroy();
+            delete drawer;
+            drawer = 0;
         }
     }
 }

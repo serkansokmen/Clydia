@@ -30,6 +30,9 @@ public:
     void gotMemoryWarning();
     void deviceOrientationChanged(int newOrientation);
     
+    void contactStart(ofxBox2dContactArgs &e);
+    void contactEnd(ofxBox2dContactArgs &e);
+    
     void clearCanvas();
     void saveCanvas();
     
