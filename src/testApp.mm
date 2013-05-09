@@ -59,29 +59,6 @@ void testApp::setup(){
     settingsUIView = [[SettingsUIView alloc] initWithNibName:@"SettingsUIView" bundle:nil];
     [ofxiPhoneGetGLView() addSubview:settingsUIView.view];
     settingsUIView.view.hidden = NO;
-    
-    /*
-    gui = new ofxUISuperCanvas("CLYDIA", OFX_UI_FONT_LARGE);
-    gui->setPosition(30, 30);
-    gui->setGlobalButtonDimension(80);
-    gui->setGlobalCanvasWidth(ofGetWidth() - 60);
-    gui->setGlobalSliderHeight(44);
-    gui->setGlobalSpacerHeight(1);
-    
-    gui->addSlider("BOUNCINESS", 0.0f, 1.0f, &bounciness);
-    gui->addSlider("FRICTION", 0.1f, 2.0f, &friction);
-    gui->addSlider("GRAVITY", 20.0f, 100.0f, &gravity);
-    gui->addSpacer();
-    gui->addLabelButton("ADD DRAWER", &bAddDrawer);
-    gui->addLabelButton("RESET DRAWERS", &bResetDrawers);
-    gui->addSpacer();
-    gui->addLabelButton("SAVE", &bSaveCanvas);
-    gui->addLabelButton("CLEAR", &bClearCanvas);
-    
-    ofAddListener(gui->newGUIEvent, this, &testApp::guiEvent);
-    
-    gui->loadSettings("GUI/guiSettings.xml");
-    */
 }
 
 //--------------------------------------------------------------
@@ -174,12 +151,6 @@ void testApp::draw(){
 }
 
 //--------------------------------------------------------------
-void testApp::guiEvent(ofxUIEventArgs &e)
-{
-	
-}
-
-//--------------------------------------------------------------
 void testApp::clearCanvas(){
     for (int i=0;i<branches.size();i++){
         branches[i]->kill();
@@ -224,8 +195,8 @@ void testApp::saveCanvas(){
 
 //--------------------------------------------------------------
 void testApp::exit(){
-    gui->saveSettings("GUI/guiSettings.xml");
-    delete gui;
+    clearCanvas();
+    resetDrawers();
 }
 
 //--------------------------------------------------------------
@@ -277,7 +248,6 @@ void testApp::addDrawer(){
 
 //--------------------------------------------------------------
 void testApp::touchDoubleTap(ofTouchEventArgs & touch){
-    // gui->toggleMinified();
     settingsUIView.view.hidden = NO;
 }
 

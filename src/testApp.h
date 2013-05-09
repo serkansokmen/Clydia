@@ -4,7 +4,6 @@
 #include "ofxiPhone.h"
 #include "ofxiPhoneExtras.h"
 #include "ofxBox2d.h"
-#include "ofxUI.h"
 #include "Branch.h"
 #include "SettingsUIView.h"
 
@@ -37,9 +36,6 @@ public:
     void addDrawer();
     void resetDrawers();
     
-    void guiEvent(ofxUIEventArgs &e);
-    
-    ofxUISuperCanvas *gui;
     SettingsUIView *settingsUIView;
     
     bool bAddDrawer = false;
