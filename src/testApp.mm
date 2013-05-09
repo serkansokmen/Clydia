@@ -56,6 +56,11 @@ void testApp::setup(){
     grabbed.allocate(width, height, OF_IMAGE_COLOR_ALPHA);
     
     // GUI
+    settingsUIView = [[SettingsUIView alloc] initWithNibName:@"SettingsUIView" bundle:nil];
+    [ofxiPhoneGetGLView() addSubview:settingsUIView.view];
+    settingsUIView.view.hidden = NO;
+    
+    /*
     gui = new ofxUISuperCanvas("CLYDIA", OFX_UI_FONT_LARGE);
     gui->setPosition(30, 30);
     gui->setGlobalButtonDimension(80);
@@ -76,6 +81,7 @@ void testApp::setup(){
     ofAddListener(gui->newGUIEvent, this, &testApp::guiEvent);
     
     gui->loadSettings("GUI/guiSettings.xml");
+    */
 }
 
 //--------------------------------------------------------------
@@ -248,7 +254,7 @@ void testApp::addDrawer(){
         drawer->setPhysics(drawerRadius * drawerRadius * initialMass, bounciness, friction);
         
         float x = ofGetWidth() / 2;
-        float y = ofGetHeight() - drawerRadius * 1.5f;
+        float y = ofGetHeight() / 2 + drawerRadius;
         
         drawer->setup(world.getWorld(), x, y, drawerRadius);
         
@@ -271,7 +277,8 @@ void testApp::addDrawer(){
 
 //--------------------------------------------------------------
 void testApp::touchDoubleTap(ofTouchEventArgs & touch){
-    gui->toggleMinified();
+    // gui->toggleMinified();
+    settingsUIView.view.hidden = NO;
 }
 
 //--------------------------------------------------------------

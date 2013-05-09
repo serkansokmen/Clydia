@@ -52,8 +52,8 @@
 		209817ED17302C7900E1287F /* ofxBox2dJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 209817BC17302C7900E1287F /* ofxBox2dJoint.cpp */; };
 		209817EE17302C7900E1287F /* ofxBox2dPolygon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 209817BE17302C7900E1287F /* ofxBox2dPolygon.cpp */; };
 		209817EF17302C7900E1287F /* ofxBox2dRect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 209817C117302C7900E1287F /* ofxBox2dRect.cpp */; };
-		209817F4173030EE00E1287F /* SettingsUIView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 209817F3173030EE00E1287F /* SettingsUIView.mm */; };
-		209817F61730311A00E1287F /* SettingsUIView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 209817F51730311A00E1287F /* SettingsUIView.xib */; };
+		20A0E3AA173C05AB00CBAAF3 /* SettingsUIView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 20A0E3A8173C05AB00CBAAF3 /* SettingsUIView.mm */; };
+		20A0E3AB173C05AB00CBAAF3 /* SettingsUIView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20A0E3A9173C05AB00CBAAF3 /* SettingsUIView.xib */; };
 		20CB86FF173AA45A00FE2B62 /* Branch.mm in Sources */ = {isa = PBXBuildFile; fileRef = 20CB86FB173AA45A00FE2B62 /* Branch.mm */; };
 		20CB8710173AAB5900FE2B62 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 20CB870B173AAB5900FE2B62 /* Default-568h@2x.png */; };
 		20CB8711173AAB5900FE2B62 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 20CB870C173AAB5900FE2B62 /* Default.png */; };
@@ -194,9 +194,9 @@
 		209817C217302C7900E1287F /* ofxBox2dRect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxBox2dRect.h; sourceTree = "<group>"; };
 		209817C317302C7900E1287F /* ofxBox2dRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxBox2dRender.h; sourceTree = "<group>"; };
 		209817C417302C7900E1287F /* ofxBox2dUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxBox2dUtils.h; sourceTree = "<group>"; };
-		209817F1173030CE00E1287F /* SettingsUIView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsUIView.h; sourceTree = "<group>"; };
-		209817F3173030EE00E1287F /* SettingsUIView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SettingsUIView.mm; sourceTree = "<group>"; };
-		209817F51730311A00E1287F /* SettingsUIView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingsUIView.xib; sourceTree = "<group>"; };
+		20A0E3A7173C05AB00CBAAF3 /* SettingsUIView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsUIView.h; sourceTree = "<group>"; };
+		20A0E3A8173C05AB00CBAAF3 /* SettingsUIView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SettingsUIView.mm; sourceTree = "<group>"; };
+		20A0E3A9173C05AB00CBAAF3 /* SettingsUIView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingsUIView.xib; sourceTree = "<group>"; };
 		20CB86FB173AA45A00FE2B62 /* Branch.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Branch.mm; sourceTree = "<group>"; };
 		20CB86FC173AA45A00FE2B62 /* Branch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Branch.h; sourceTree = "<group>"; };
 		20CB870B173AAB5900FE2B62 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
@@ -674,9 +674,9 @@
 				E4D8936B11527B74007E1F53 /* main.mm */,
 				E4D8936D11527B74007E1F53 /* testApp.mm */,
 				E4D8936C11527B74007E1F53 /* testApp.h */,
-				209817F3173030EE00E1287F /* SettingsUIView.mm */,
-				209817F1173030CE00E1287F /* SettingsUIView.h */,
-				209817F51730311A00E1287F /* SettingsUIView.xib */,
+				20A0E3A7173C05AB00CBAAF3 /* SettingsUIView.h */,
+				20A0E3A8173C05AB00CBAAF3 /* SettingsUIView.mm */,
+				20A0E3A9173C05AB00CBAAF3 /* SettingsUIView.xib */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;
@@ -752,12 +752,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				209817C517302C7900E1287F /* install.xml in Resources */,
-				209817F61730311A00E1287F /* SettingsUIView.xib in Resources */,
 				20CB8710173AAB5900FE2B62 /* Default-568h@2x.png in Resources */,
 				20CB8711173AAB5900FE2B62 /* Default.png in Resources */,
 				20CB8712173AAB5900FE2B62 /* Default@2x.png in Resources */,
 				20CB8713173AAB5900FE2B62 /* Icon.png in Resources */,
 				20CB8714173AAB5900FE2B62 /* Icon@2x.png in Resources */,
+				20A0E3AB173C05AB00CBAAF3 /* SettingsUIView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -828,12 +828,12 @@
 				209817ED17302C7900E1287F /* ofxBox2dJoint.cpp in Sources */,
 				209817EE17302C7900E1287F /* ofxBox2dPolygon.cpp in Sources */,
 				209817EF17302C7900E1287F /* ofxBox2dRect.cpp in Sources */,
-				209817F4173030EE00E1287F /* SettingsUIView.mm in Sources */,
 				20CB86FF173AA45A00FE2B62 /* Branch.mm in Sources */,
 				20CB8B58173AFB4500FE2B62 /* tinyxml.cpp in Sources */,
 				20CB8B59173AFB4500FE2B62 /* tinyxmlerror.cpp in Sources */,
 				20CB8B5A173AFB4500FE2B62 /* tinyxmlparser.cpp in Sources */,
 				20CB8B5B173AFB4500FE2B62 /* ofxXmlSettings.cpp in Sources */,
+				20A0E3AA173C05AB00CBAAF3 /* SettingsUIView.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -852,14 +852,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Serkan Sökmen (X5W57EQPMB)";
 				COMPRESS_PNG_FILES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = iPhone_Prefix.pch;
 				INFOPLIST_FILE = "ofxiphone-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				PRODUCT_NAME = Clydia;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "BB748E5A-2922-493D-BBFE-367DEE111928";
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "armv6 armv7";
 			};
@@ -868,14 +868,14 @@
 		1D6058950D05DD3E006BFB54 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: ETEM SOKMEN";
 				COMPRESS_PNG_FILES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = iPhone_Prefix.pch;
 				INFOPLIST_FILE = "ofxiphone-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				PRODUCT_NAME = Clydia;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "685F1DD6-9FF8-42EB-9ED7-87E21FC6976B";
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "armv6 armv7";
 			};

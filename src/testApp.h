@@ -6,6 +6,7 @@
 #include "ofxBox2d.h"
 #include "ofxUI.h"
 #include "Branch.h"
+#include "SettingsUIView.h"
 
 #define FPS 60
 
@@ -39,6 +40,7 @@ public:
     void guiEvent(ofxUIEventArgs &e);
     
     ofxUISuperCanvas *gui;
+    SettingsUIView *settingsUIView;
     
     bool bAddDrawer = false;
     bool bResetDrawers = false;
