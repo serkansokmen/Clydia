@@ -22,7 +22,6 @@ void testApp::setup(){
     ofSetLogLevel(OF_LOG_WARNING);
     ofEnableSmoothing();
     ofSetVerticalSync(true);
-    ofSetCircleResolution(25);
     
     // Box2d
     world.init();
@@ -96,13 +95,11 @@ void testApp::update(){
             
             tPos->set(drawer->getPosition());
             
-            if (drawer->getVelocity().x >= 2.0f || drawer->getVelocity().y >= 2.0f) {
-                Branch *branch = new Branch;
-                tPos->x += ofRandom(-1, 1) * 10;
-                tPos->y += ofRandom(-1, 1) * 10;
-                branch->setup(*tPos, *drawRect);
-                branches.push_back(branch);
-            }
+            Branch *branch = new Branch;
+            tPos->x += ofRandom(-1, 1) * 10;
+            tPos->y += ofRandom(-1, 1) * 10;
+            branch->setup(*tPos, *drawRect);
+            branches.push_back(branch);
         }
         
         // update clydias
@@ -224,7 +221,7 @@ void testApp::addDrawer(){
         drawer->setPhysics(drawerRadius * drawerRadius * initialMass, bounciness, friction);
         
         float x = ofGetWidth() * .5f;
-        float y = ofGetHeight() * .5f + (ofGetHeight() * .5f - drawerRadius) * .5f;
+        float y = (ofGetHeight() - ofGetHeight() * .5f) + drawerRadius * .5f;
         
         drawer->setup(world.getWorld(), x, y, drawerRadius);
         
