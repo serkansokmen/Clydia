@@ -38,6 +38,7 @@ public:
     
     SettingsUIView *settingsUIView;
     
+    bool bDraw = true;
     bool bAddDrawer = false;
     bool bResetDrawers = false;
     bool bClearCanvas = false;
@@ -47,24 +48,17 @@ public:
     float friction = .8f;
     float bounciness = 0.8f;
     float gravity = 80.0f;
-    float drawerRadius = 120;
+    float drawerRadius = 80;
     
+    ofRectangle *drawRect;
+    
+    // Clydia
     ofFbo clydiaCanvas;
-    ofImage grabbed;
-    unsigned char * pixels;
-    
-    // Branches
     vector <Branch *> branches;
     
+    int maxCircles = 50;
     
+    // Box2d
     ofxBox2d world;
     vector <ofxBox2dCircle *> drawers;
-    ofRectangle drawRect;
-    
-    void processOpenFileSelection(ofFileDialogResult openFileResult);
-    //bool sortColorFunction (ofColor i,ofColor j);
-	vector <ofImage> loadedImages;
-	vector <ofImage> processedImages;
-	string originalFileExtension;
-    
 };

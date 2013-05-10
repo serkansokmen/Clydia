@@ -54,6 +54,9 @@
 		209817EF17302C7900E1287F /* ofxBox2dRect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 209817C117302C7900E1287F /* ofxBox2dRect.cpp */; };
 		20A0E3AA173C05AB00CBAAF3 /* SettingsUIView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 20A0E3A8173C05AB00CBAAF3 /* SettingsUIView.mm */; };
 		20A0E3AB173C05AB00CBAAF3 /* SettingsUIView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20A0E3A9173C05AB00CBAAF3 /* SettingsUIView.xib */; };
+		20A0E3C9173C12DF00CBAAF3 /* BiologicalVehicle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20A0E3AF173C12DF00CBAAF3 /* BiologicalVehicle.cpp */; };
+		20A0E3CA173C12DF00CBAAF3 /* SteeredVehicle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20A0E3B1173C12DF00CBAAF3 /* SteeredVehicle.cpp */; };
+		20A0E3CB173C12DF00CBAAF3 /* Vehicle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20A0E3B3173C12DF00CBAAF3 /* Vehicle.cpp */; };
 		20CB86FF173AA45A00FE2B62 /* Branch.mm in Sources */ = {isa = PBXBuildFile; fileRef = 20CB86FB173AA45A00FE2B62 /* Branch.mm */; };
 		20CB8710173AAB5900FE2B62 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 20CB870B173AAB5900FE2B62 /* Default-568h@2x.png */; };
 		20CB8711173AAB5900FE2B62 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 20CB870C173AAB5900FE2B62 /* Default.png */; };
@@ -193,6 +196,13 @@
 		20A0E3A7173C05AB00CBAAF3 /* SettingsUIView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsUIView.h; sourceTree = "<group>"; };
 		20A0E3A8173C05AB00CBAAF3 /* SettingsUIView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SettingsUIView.mm; sourceTree = "<group>"; };
 		20A0E3A9173C05AB00CBAAF3 /* SettingsUIView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingsUIView.xib; sourceTree = "<group>"; };
+		20A0E3AF173C12DF00CBAAF3 /* BiologicalVehicle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BiologicalVehicle.cpp; sourceTree = "<group>"; };
+		20A0E3B0173C12DF00CBAAF3 /* BiologicalVehicle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BiologicalVehicle.h; sourceTree = "<group>"; };
+		20A0E3B1173C12DF00CBAAF3 /* SteeredVehicle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SteeredVehicle.cpp; sourceTree = "<group>"; };
+		20A0E3B2173C12DF00CBAAF3 /* SteeredVehicle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SteeredVehicle.h; sourceTree = "<group>"; };
+		20A0E3B3173C12DF00CBAAF3 /* Vehicle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Vehicle.cpp; sourceTree = "<group>"; };
+		20A0E3B4173C12DF00CBAAF3 /* Vehicle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Vehicle.h; sourceTree = "<group>"; };
+		20A0E3C7173C12DF00CBAAF3 /* ofxBoids.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxBoids.h; sourceTree = "<group>"; };
 		20CB86FB173AA45A00FE2B62 /* Branch.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Branch.mm; sourceTree = "<group>"; };
 		20CB86FC173AA45A00FE2B62 /* Branch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Branch.h; sourceTree = "<group>"; };
 		20CB870B173AAB5900FE2B62 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
@@ -435,6 +445,29 @@
 			path = src;
 			sourceTree = "<group>";
 		};
+		20A0E3AD173C12DF00CBAAF3 /* ofxBoids */ = {
+			isa = PBXGroup;
+			children = (
+				20A0E3AE173C12DF00CBAAF3 /* core */,
+				20A0E3C7173C12DF00CBAAF3 /* ofxBoids.h */,
+			);
+			name = ofxBoids;
+			path = ../../../addons/ofxBoids;
+			sourceTree = "<group>";
+		};
+		20A0E3AE173C12DF00CBAAF3 /* core */ = {
+			isa = PBXGroup;
+			children = (
+				20A0E3AF173C12DF00CBAAF3 /* BiologicalVehicle.cpp */,
+				20A0E3B0173C12DF00CBAAF3 /* BiologicalVehicle.h */,
+				20A0E3B1173C12DF00CBAAF3 /* SteeredVehicle.cpp */,
+				20A0E3B2173C12DF00CBAAF3 /* SteeredVehicle.h */,
+				20A0E3B3173C12DF00CBAAF3 /* Vehicle.cpp */,
+				20A0E3B4173C12DF00CBAAF3 /* Vehicle.h */,
+			);
+			path = core;
+			sourceTree = "<group>";
+		};
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
@@ -483,6 +516,7 @@
 		BB16F26B0F2B646B00518274 /* addons */ = {
 			isa = PBXGroup;
 			children = (
+				20A0E3AD173C12DF00CBAAF3 /* ofxBoids */,
 				2098175C17302C7900E1287F /* ofxBox2d */,
 			);
 			name = addons;
@@ -680,6 +714,9 @@
 				209817EF17302C7900E1287F /* ofxBox2dRect.cpp in Sources */,
 				20CB86FF173AA45A00FE2B62 /* Branch.mm in Sources */,
 				20A0E3AA173C05AB00CBAAF3 /* SettingsUIView.mm in Sources */,
+				20A0E3C9173C12DF00CBAAF3 /* BiologicalVehicle.cpp in Sources */,
+				20A0E3CA173C12DF00CBAAF3 /* SteeredVehicle.cpp in Sources */,
+				20A0E3CB173C12DF00CBAAF3 /* Vehicle.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

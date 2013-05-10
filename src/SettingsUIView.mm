@@ -14,9 +14,14 @@
 
 testApp *app;
 
--(void) viewDidLoad
+-(void)viewDidLoad
 {
     app = (testApp*)ofGetAppPtr();
+}
+
+- (IBAction)toggleDrawEnabled:(id)sender {
+    UISwitch *theSwitch = (UISwitch *)sender;
+    app->bDraw = theSwitch.on;
 }
 
 -(IBAction)hide

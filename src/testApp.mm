@@ -24,6 +24,7 @@ void testApp::setup(){
     ofSetVerticalSync(true);
     ofSetCircleResolution(25);
     
+    // Box2d
     world.init();
     world.doSleep = false;
     world.checkBounds(true);
@@ -34,7 +35,7 @@ void testApp::setup(){
     ofFbo::Settings settings;
     settings.width = ofGetWidth();
     settings.height = ofGetHeight();
-    settings.internalformat = GL_RGBA;
+    settings.internalformat = GL_RGB;
     settings.numSamples = 0;
     settings.useDepth = true;
     settings.useStencil = true;
@@ -47,36 +48,31 @@ void testApp::setup(){
     ofRect(0, 0, ofGetWidth(), ofGetHeight());
     clydiaCanvas.end();
     
-    drawRect.set(0, 0, ofGetWidth(), ofGetHeight());
-    
-    int width = (int)clydiaCanvas.getWidth();
-    int height = (int)clydiaCanvas.getHeight();
-    
-    pixels = new unsigned char[width * height * 4];
-    grabbed.allocate(width, height, OF_IMAGE_COLOR_ALPHA);
-    
     // GUI
     settingsUIView = [[SettingsUIView alloc] initWithNibName:@"SettingsUIView" bundle:nil];
     [ofxiPhoneGetGLView() addSubview:settingsUIView.view];
     settingsUIView.view.hidden = NO;
+    
+    drawRect = new ofRectangle;
+    drawRect->set(0, 0, clydiaCanvas.getWidth(), clydiaCanvas.getHeight());
 }
 
 //--------------------------------------------------------------
 void testApp::update(){
     
-    if (bAddDrawer) {
+    if (bAddDrawer){
         addDrawer();
         bAddDrawer = false;
     }
-    if (bResetDrawers) {
+    if (bResetDrawers){
         resetDrawers();
         bResetDrawers = false;
     }
-    if (bClearCanvas) {
+    if (bClearCanvas){
         clearCanvas();
         bClearCanvas = false;
     }
-    if (bSaveCanvas) {
+    if (bSaveCanvas){
         saveCanvas();
         bSaveCanvas = false;
     }
@@ -92,42 +88,41 @@ void testApp::update(){
     
     world.setGravity(fx, fy);
     
-    for (int i=0; i<drawers.size(); i++) {
-        ofxBox2dCircle *drawer = drawers[i];
-        
+    if (bDraw) {
         ofVec2f *tPos = new ofVec2f;
         
-        tPos->set(drawer->getPosition());
-        if (drawer->getVelocity().x >= 2.0f || drawer->getVelocity().y >= 2.0f) {
-            Branch *branch = new Branch;
-            tPos->x += ofRandom(-1, 1) * 10;
-            tPos->y += ofRandom(-1, 1) * 10;
-            branch->setup(*tPos, drawRect);
-            (ofRandomf() < .1f) ? branch->setDrawMode(CL_BRANCH_DRAW_CIRCLES) : branch->setDrawMode(CL_BRANCH_DRAW_CIRCLES);
-            branch->setDrawMode(CL_BRANCH_DRAW_LEAVES);
-            branches.push_back(branch);
+        for (int i=0; i<drawers.size(); i++){
+            ofxBox2dCircle *drawer = drawers[i];
+            
+            tPos->set(drawer->getPosition());
+            
+            if (drawer->getVelocity().x >= 2.0f || drawer->getVelocity().y >= 2.0f) {
+                Branch *branch = new Branch;
+                tPos->x += ofRandom(-1, 1) * 10;
+                tPos->y += ofRandom(-1, 1) * 10;
+                branch->setup(*tPos, *drawRect);
+                branches.push_back(branch);
+            }
         }
-    }
-    
-	// update clydias
-	for (int i=0; i<branches.size(); i++) {
         
-		if (branches[i]->getIsAlive()) {
-            branches[i]->update();
-        } else {
-            delete branches[i];
-            branches[i] = 0;
-            branches.erase(branches.begin()+i);
+        // update clydias
+        for (int i=0; i<branches.size(); i++) {
+            if (branches[i]->getIsAlive()) {
+                branches[i]->update();
+            } else {
+                delete branches[i];
+                branches[i] = 0;
+                branches.erase(branches.begin() + i);
+            }
         }
-	}
-    
-    // draw branches
-    clydiaCanvas.begin();
-    ofSetColor(0, 0);
-	for (int i=0; i<branches.size(); i++) {
-        branches[i]->draw();
+        
+        // draw branches
+        clydiaCanvas.begin();
+        for (int i=0; i<branches.size(); i++) {
+            branches[i]->draw();
+        }
+        clydiaCanvas.end();
     }
-    clydiaCanvas.end();
 }
 
 //--------------------------------------------------------------
@@ -152,6 +147,7 @@ void testApp::draw(){
 
 //--------------------------------------------------------------
 void testApp::clearCanvas(){
+    
     for (int i=0;i<branches.size();i++){
         branches[i]->kill();
         delete branches[i];
@@ -176,7 +172,7 @@ void testApp::resetDrawers(){
 
 //--------------------------------------------------------------
 void testApp::saveCanvas(){
-    
+    /*
     ofFbo fbo;
     
     int width = (int)clydiaCanvas.getWidth();
@@ -185,18 +181,21 @@ void testApp::saveCanvas(){
     fbo.begin();
     
     clydiaCanvas.draw(0, 0, ofGetWidth(), ofGetHeight());
+    
     glPixelStorei(GL_PACK_ALIGNMENT, 1);
     glReadPixels(0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
     
     grabbed.setFromPixels(pixels, width, height, OF_IMAGE_COLOR_ALPHA);
     grabbed.saveImage("test1.png");
+    
     fbo.end();
+    */
 }
 
 //--------------------------------------------------------------
 void testApp::exit(){
-    clearCanvas();
     resetDrawers();
+    clearCanvas();
 }
 
 //--------------------------------------------------------------
@@ -224,11 +223,10 @@ void testApp::addDrawer(){
         ofxBox2dCircle *drawer = new ofxBox2dCircle;
         drawer->setPhysics(drawerRadius * drawerRadius * initialMass, bounciness, friction);
         
-        float x = ofGetWidth() / 2;
-        float y = ofGetHeight() / 2 + drawerRadius;
+        float x = ofGetWidth() * .5f;
+        float y = ofGetHeight() * .5f + (ofGetHeight() * .5f - drawerRadius) * .5f;
         
         drawer->setup(world.getWorld(), x, y, drawerRadius);
-        
         
         for (int i=0; i<drawers.size(); i++) {
             ofxBox2dCircle *existingDrawer = drawers[i];

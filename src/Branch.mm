@@ -14,7 +14,7 @@ Branch::~Branch()
 void Branch::setup(const ofPoint &pos, const ofRectangle &b)
 {
     lifeState = CL_BRANCH_SPAWNING;
-    drawMode = CL_BRANCH_DRAW_CIRCLES;
+    drawMode = CL_BRANCH_DRAW_LEAVES;
     
     age = 0;
     ageCoeff = ofRandom(CL_BRANCH_AGING_COEFF_MIN, CL_BRANCH_AGING_COEFF_MAX);
@@ -81,7 +81,17 @@ void Branch::draw()
 {
     switch (drawMode)
     {
-        case CL_BRANCH_DRAW_LEAVES:
+        case CL_BRANCH_DRAW_CIRCLES: {
+            float alpha = ofMap(age, 0, ageOfDeath, 0, 150.0);
+            float radius = ofMap(age, 0, ageOfDeath, 10.0f, 0.1f);
+            ofSetColor(color, alpha);
+            for (int i=0; i<positions.size(); i++)
+                ofCircle(positions[i]->x, positions[i]->y, radius);
+            
+            break;
+        }
+            
+        case CL_BRANCH_DRAW_LEAVES: {
             ofSetColor(color);
             ofSetPolyMode(OF_POLY_WINDING_NONZERO);
             ofBeginShape();
@@ -89,14 +99,9 @@ void Branch::draw()
                 ofVertex(positions[i]->x, positions[i]->y);
             ofEndShape(false);
             break;
-            
-        case CL_BRANCH_DRAW_CIRCLES:
-            float alpha = ofMap(age, 0, ageOfDeath, 0, 150.0);
-            float radius = ofMap(age, 0, ageOfDeath, 10.0f, 0.1f);
-            ofSetColor(color, alpha);
-            for (int i=0; i<positions.size(); i++)
-                ofCircle(positions[i]->x, positions[i]->y, radius);
-            
+        }
+        
+        default:
             break;
     }
 }
