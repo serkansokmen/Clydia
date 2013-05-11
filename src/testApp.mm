@@ -87,21 +87,21 @@ void testApp::update(){
     
     world.setGravity(fx, fy);
     
+    ofVec2f *tPos = new ofVec2f;
+    
+    for (int i=0; i<drawers.size(); i++){
+        ofxBox2dCircle *drawer = drawers[i];
+        
+        tPos->set(drawer->getPosition());
+        
+        Branch *branch = new Branch;
+        tPos->x += ofRandom(-1, 1) * 10;
+        tPos->y += ofRandom(-1, 1) * 10;
+        branch->setup(*tPos, *drawRect);
+        branches.push_back(branch);
+    }
+    
     if (bDraw) {
-        ofVec2f *tPos = new ofVec2f;
-        
-        for (int i=0; i<drawers.size(); i++){
-            ofxBox2dCircle *drawer = drawers[i];
-            
-            tPos->set(drawer->getPosition());
-            
-            Branch *branch = new Branch;
-            tPos->x += ofRandom(-1, 1) * 10;
-            tPos->y += ofRandom(-1, 1) * 10;
-            branch->setup(*tPos, *drawRect);
-            branches.push_back(branch);
-        }
-        
         // update clydias
         for (int i=0; i<branches.size(); i++) {
             if (branches[i]->getIsAlive()) {
@@ -169,24 +169,20 @@ void testApp::resetDrawers(){
 
 //--------------------------------------------------------------
 void testApp::saveCanvas(){
-    /*
-    ofFbo fbo;
     
-    int width = (int)clydiaCanvas.getWidth();
-    int height = (int)clydiaCanvas.getHeight();
+    resetDrawers();
+    
+    ofFbo fbo;
     
     fbo.begin();
     
     clydiaCanvas.draw(0, 0, ofGetWidth(), ofGetHeight());
     
-    glPixelStorei(GL_PACK_ALIGNMENT, 1);
-    glReadPixels(0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
-    
-    grabbed.setFromPixels(pixels, width, height, OF_IMAGE_COLOR_ALPHA);
-    grabbed.saveImage("test1.png");
-    
     fbo.end();
-    */
+    
+    ofxiPhoneAppDelegate * delegate = ofxiPhoneGetAppDelegate();
+    
+    ofxiPhoneScreenGrab(delegate);
 }
 
 //--------------------------------------------------------------
