@@ -1,20 +1,13 @@
-#include "testApp.h"
+#include "App.h"
 
 //--------------------------------------------------------------
-void testApp::setup(){
-    // initialize the accelerometer
+void App::setup(){
+    ofSetOrientation(OF_ORIENTATION_DEFAULT);
     ofxAccelerometer.setup();
-    
-    //iPhoneAlerts will be sent to this.
-    ofxiPhoneAlerts.addListener(this);
-    
-    // register touch events
     ofRegisterTouchEvents(this);
-    
-    //If you want a landscape oreintation
-    //iPhoneSetOrientation(OFXIPHONE_ORIENTATION_LANDSCAPE_RIGHT);
-    
     ofSetBackgroundAuto(true);
+    
+    ofxiPhoneAlerts.addListener(this);
     ofBackgroundGradient(ofColor(0), ofColor(0x490704));
     
     ofEnableAlphaBlending();
@@ -49,7 +42,8 @@ void testApp::setup(){
     
     // GUI
     settingsUIView = [[SettingsUIView alloc] initWithNibName:@"SettingsUIView" bundle:nil];
-    [ofxiPhoneGetGLView() addSubview:settingsUIView.view];
+    
+    [ofxiOSGetGLView() addSubview:settingsUIView.view];
     settingsUIView.view.hidden = NO;
     
     drawRect = new ofRectangle;
@@ -57,7 +51,7 @@ void testApp::setup(){
 }
 
 //--------------------------------------------------------------
-void testApp::update(){
+void App::update(){
     
     if (bAddDrawer){
         addDrawer();
@@ -123,7 +117,7 @@ void testApp::update(){
 }
 
 //--------------------------------------------------------------
-void testApp::draw(){
+void App::draw(){
     
     ofSetColor(255, 255);
     clydiaCanvas.draw(0, 0);
@@ -143,7 +137,7 @@ void testApp::draw(){
 }
 
 //--------------------------------------------------------------
-void testApp::clearCanvas(){
+void App::clearCanvas(){
     
     for (int i=0;i<branches.size();i++){
         branches[i]->kill();
@@ -160,7 +154,7 @@ void testApp::clearCanvas(){
 
 
 //--------------------------------------------------------------
-void testApp::resetDrawers(){
+void App::resetDrawers(){
     for (int i=0;i<drawers.size();i++){
         drawers[i]->destroy();
     }
@@ -168,7 +162,7 @@ void testApp::resetDrawers(){
 }
 
 //--------------------------------------------------------------
-void testApp::saveCanvas(){
+void App::saveCanvas(){
     
     resetDrawers();
     
@@ -186,28 +180,28 @@ void testApp::saveCanvas(){
 }
 
 //--------------------------------------------------------------
-void testApp::exit(){
+void App::exit(){
     resetDrawers();
     clearCanvas();
 }
 
 //--------------------------------------------------------------
-void testApp::touchDown(ofTouchEventArgs & touch){
+void App::touchDown(ofTouchEventArgs & touch){
     
 }
 
 //--------------------------------------------------------------
-void testApp::touchMoved(ofTouchEventArgs & touch){
+void App::touchMoved(ofTouchEventArgs & touch){
 
 }
 
 //--------------------------------------------------------------
-void testApp::touchUp(ofTouchEventArgs & touch){
+void App::touchUp(ofTouchEventArgs & touch){
     
 }
 
 //--------------------------------------------------------------
-void testApp::addDrawer(){
+void App::addDrawer(){
     
     if (drawers.size() < 5) {
         
@@ -238,32 +232,49 @@ void testApp::addDrawer(){
 }
 
 //--------------------------------------------------------------
-void testApp::touchDoubleTap(ofTouchEventArgs & touch){
+void App::touchDoubleTap(ofTouchEventArgs & touch){
     settingsUIView.view.hidden = NO;
 }
 
 //--------------------------------------------------------------
-void testApp::touchCancelled(ofTouchEventArgs & touch){
+void App::touchCancelled(ofTouchEventArgs & touch){
     
 }
 
 //--------------------------------------------------------------
-void testApp::lostFocus(){
+void App::lostFocus(){
     
 }
 
 //--------------------------------------------------------------
-void testApp::gotFocus(){
+void App::gotFocus(){
     
 }
 
 //--------------------------------------------------------------
-void testApp::gotMemoryWarning(){
+void App::gotMemoryWarning(){
     clearCanvas();
 }
 
 //--------------------------------------------------------------
-void testApp::deviceOrientationChanged(int newOrientation){
-    
+void App::deviceOrientationChanged(int newOrientation){
+//    switch (newOrientation) {
+//        case OF_ORIENTATION_90_LEFT:
+//            ofxiPhoneSetOrientation(OF_ORIENTATION_90_RIGHT);
+//            break;
+//            
+//        case OF_ORIENTATION_90_RIGHT:
+//            ofxiPhoneSetOrientation(OF_ORIENTATION_90_RIGHT);
+//            break;
+//        
+//        case OF_ORIENTATION_180:
+//            ofxiPhoneSetOrientation(OF_ORIENTATION_180);
+//            break;
+//        
+//        case OF_ORIENTATION_DEFAULT:
+//        case OF_ORIENTATION_UNKNOWN:
+//            ofxiPhoneSetOrientation(OF_ORIENTATION_DEFAULT);
+//            break;
+//    }
 }
 

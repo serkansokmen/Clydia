@@ -8,15 +8,15 @@
 
 #import "SettingsUIView.h"
 #import "ofxiPhoneExtras.h"
-#import "testApp.h"
+#import "App.h"
 
 @implementation SettingsUIView
 
-testApp *app;
+App *app;
 
 -(void)viewDidLoad
 {
-    app = (testApp*)ofGetAppPtr();
+    app = (App*)ofGetAppPtr();
 }
 
 - (IBAction)toggleDrawEnabled:(id)sender {

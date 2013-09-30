@@ -10,7 +10,7 @@
 #define FPS 60
 
 
-class testApp : public ofxiPhoneApp
+class App : public ofxiPhoneApp
 {
 public:
     

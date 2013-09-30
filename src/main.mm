@@ -1,15 +1,19 @@
 #include "ofMain.h"
-#include "testApp.h"
+#include "App.h"
+
 
 int main()
 {
-    ofAppiPhoneWindow * iOSWindow = new ofAppiPhoneWindow();
-	
-	// iOSWindow->enableDepthBuffer();
-	// iOSWindow->enableAntiAliasing(2);
-    iOSWindow->enableRetina();
+    ofAppiOSWindow * window = new ofAppiOSWindow();
+    window->enableRendererES2();
     
-    ofSetupOpenGL(iOSWindow, 1024, 768, OF_FULLSCREEN);
+    // iOSWindow->enableDepthBuffer();
+    if (window->isRetinaSupportedOnDevice()) {
+        window->enableRetina();
+    } else {
+        window->enableAntiAliasing(2);
+    }
     
-	ofRunApp(new testApp);
+	ofSetupOpenGL(window, 1024, 768, OF_FULLSCREEN);    // setup the GL context
+	ofRunApp(new App());                            // run app.
 }
