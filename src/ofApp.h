@@ -1,16 +1,17 @@
 #pragma once
 
 #include "ofMain.h"
-#include "ofxiPhone.h"
-#include "ofxiPhoneExtras.h"
+#include "ofxiOS.h"
+#include "ofxiOSExtras.h"
 #include "ofxBox2d.h"
+#include "ofxGui.h"
 #include "Branch.h"
 #include "SettingsUIView.h"
 
 #define FPS 60
 
 
-class App : public ofxiPhoneApp
+class ofApp : public ofxiOSApp
 {
 public:
     
@@ -36,27 +37,26 @@ public:
     void addDrawer();
     void resetDrawers();
     
-    SettingsUIView *settingsUIView;
+    ofParameter<float> initialMass;
+    ofParameter<float> friction;
+    ofParameter<float> bounciness;
+    ofParameter<float> gravity;
+    ofParameter<bool>  bDraw;
     
-    bool bDraw = true;
-    bool bAddDrawer = false;
-    bool bResetDrawers = false;
-    bool bClearCanvas = false;
-    bool bSaveCanvas = false;
+    float drawerRadius;
+    bool bAddDrawer;
+    bool bResetDrawers;
+    bool bClearCanvas;
+    bool bSaveCanvas;
     
-    float initialMass = 1.0f;
-    float friction = .8f;
-    float bounciness = 0.8f;
-    float gravity = 80.0f;
-    float drawerRadius = 80;
-    
-    ofRectangle *drawRect;
+    ofRectangle         *drawRect;
     
     // Clydia
-    ofFbo clydiaCanvas;
-    vector <Branch *> branches;
+    ofFbo               clydiaCanvas;
+    vector<Branch *>    branches;
     
-    int maxCircles = 50;
+    // GUI
+    SettingsUIView      *settingsUIView;
     
     // Box2d
     ofxBox2d world;

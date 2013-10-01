@@ -1,13 +1,14 @@
-#include "App.h"
+#include "ofApp.h"
+
 
 //--------------------------------------------------------------
-void App::setup(){
+void ofApp::setup(){
     ofSetOrientation(OF_ORIENTATION_DEFAULT);
     ofxAccelerometer.setup();
     ofRegisterTouchEvents(this);
     ofSetBackgroundAuto(true);
     
-    ofxiPhoneAlerts.addListener(this);
+    ofxiOSAlerts.addListener(this);
     ofBackgroundGradient(ofColor(0), ofColor(0x490704));
     
     ofEnableAlphaBlending();
@@ -40,18 +41,25 @@ void App::setup(){
     ofRect(0, 0, ofGetWidth(), ofGetHeight());
     clydiaCanvas.end();
     
-    // GUI
-    settingsUIView = [[SettingsUIView alloc] initWithNibName:@"SettingsUIView" bundle:nil];
+    // GUI & Settings
+    initialMass.set("Initial Mass", 1.f);
+    friction.set("Friction", .8f);
+    bounciness.set("Bounciness", .8f);
+    gravity.set("Gravity", 80.f);
+    bDraw.set(true);
     
-    [ofxiOSGetGLView() addSubview:settingsUIView.view];
+    settingsUIView = [[SettingsUIView alloc] initWithNibName:@"SettingsUIView" bundle:nil];
+    [ofxiOSGetGLParentView() addSubview:settingsUIView.view];
     settingsUIView.view.hidden = NO;
+    
+    drawerRadius = 44.f;
     
     drawRect = new ofRectangle;
     drawRect->set(0, 0, clydiaCanvas.getWidth(), clydiaCanvas.getHeight());
 }
 
 //--------------------------------------------------------------
-void App::update(){
+void ofApp::update(){
     
     if (bAddDrawer){
         addDrawer();
@@ -69,6 +77,7 @@ void App::update(){
         saveCanvas();
         bSaveCanvas = false;
     }
+
     
     float accx = ofxAccelerometer.getForce().x;
     float accy = ofxAccelerometer.getForce().y;
@@ -117,7 +126,7 @@ void App::update(){
 }
 
 //--------------------------------------------------------------
-void App::draw(){
+void ofApp::draw(){
     
     ofSetColor(255, 255);
     clydiaCanvas.draw(0, 0);
@@ -137,7 +146,7 @@ void App::draw(){
 }
 
 //--------------------------------------------------------------
-void App::clearCanvas(){
+void ofApp::clearCanvas(){
     
     for (int i=0;i<branches.size();i++){
         branches[i]->kill();
@@ -154,7 +163,7 @@ void App::clearCanvas(){
 
 
 //--------------------------------------------------------------
-void App::resetDrawers(){
+void ofApp::resetDrawers(){
     for (int i=0;i<drawers.size();i++){
         drawers[i]->destroy();
     }
@@ -162,46 +171,43 @@ void App::resetDrawers(){
 }
 
 //--------------------------------------------------------------
-void App::saveCanvas(){
+void ofApp::saveCanvas(){
     
     resetDrawers();
     
     ofFbo fbo;
     
     fbo.begin();
-    
     clydiaCanvas.draw(0, 0, ofGetWidth(), ofGetHeight());
-    
     fbo.end();
     
-    ofxiPhoneAppDelegate * delegate = ofxiPhoneGetAppDelegate();
-    
-    ofxiPhoneScreenGrab(delegate);
+    ofxiOSAppDelegate * delegate = ofxiOSGetAppDelegate();
+    ofxiOSScreenGrab(delegate);
 }
 
 //--------------------------------------------------------------
-void App::exit(){
+void ofApp::exit(){
     resetDrawers();
     clearCanvas();
 }
 
 //--------------------------------------------------------------
-void App::touchDown(ofTouchEventArgs & touch){
+void ofApp::touchDown(ofTouchEventArgs & touch){
     
 }
 
 //--------------------------------------------------------------
-void App::touchMoved(ofTouchEventArgs & touch){
+void ofApp::touchMoved(ofTouchEventArgs & touch){
 
 }
 
 //--------------------------------------------------------------
-void App::touchUp(ofTouchEventArgs & touch){
+void ofApp::touchUp(ofTouchEventArgs & touch){
     
 }
 
 //--------------------------------------------------------------
-void App::addDrawer(){
+void ofApp::addDrawer(){
     
     if (drawers.size() < 5) {
         
@@ -232,32 +238,33 @@ void App::addDrawer(){
 }
 
 //--------------------------------------------------------------
-void App::touchDoubleTap(ofTouchEventArgs & touch){
+void ofApp::touchDoubleTap(ofTouchEventArgs & touch){
     settingsUIView.view.hidden = NO;
 }
 
 //--------------------------------------------------------------
-void App::touchCancelled(ofTouchEventArgs & touch){
+void ofApp::touchCancelled(ofTouchEventArgs & touch){
     
 }
 
 //--------------------------------------------------------------
-void App::lostFocus(){
+void ofApp::lostFocus(){
     
 }
 
 //--------------------------------------------------------------
-void App::gotFocus(){
+void ofApp::gotFocus(){
     
 }
 
 //--------------------------------------------------------------
-void App::gotMemoryWarning(){
+void ofApp::gotMemoryWarning(){
     clearCanvas();
+    resetDrawers();
 }
 
 //--------------------------------------------------------------
-void App::deviceOrientationChanged(int newOrientation){
+void ofApp::deviceOrientationChanged(int newOrientation){
 //    switch (newOrientation) {
 //        case OF_ORIENTATION_90_LEFT:
 //            ofxiPhoneSetOrientation(OF_ORIENTATION_90_RIGHT);

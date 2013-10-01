@@ -8,20 +8,20 @@
 
 #import "SettingsUIView.h"
 #import "ofxiPhoneExtras.h"
-#import "App.h"
+#import "ofApp.h"
 
 @implementation SettingsUIView
 
-App *app;
+ofApp *app;
 
 -(void)viewDidLoad
 {
-    app = (App*)ofGetAppPtr();
+    app = (ofApp*)ofGetAppPtr();
 }
 
 - (IBAction)toggleDrawEnabled:(id)sender {
     UISwitch *theSwitch = (UISwitch *)sender;
-    app->bDraw = theSwitch.on;
+    app->bDraw.set(theSwitch.on);
 }
 
 -(IBAction)hide
@@ -53,19 +53,19 @@ App *app;
 - (IBAction)setBounciness:(UISlider *)sender
 {
     UISlider *sliderObj = (UISlider*)sender;
-    app->bounciness = [sliderObj value];
+    app->bounciness.set([sliderObj value]);
 }
 
 - (IBAction)setFriction:(UISlider *)sender
 {
     UISlider *sliderObj = (UISlider*)sender;
-    app->friction = [sliderObj value];
+    app->friction.set([sliderObj value]);
 }
 
 - (IBAction)setGravity:(UISlider *)sender
 {
     UISlider *sliderObj = (UISlider*)sender;
-    app->gravity = [sliderObj value];
+    app->gravity.set([sliderObj value]);
 }
 
 @end
